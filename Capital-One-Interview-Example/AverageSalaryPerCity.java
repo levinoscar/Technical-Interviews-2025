@@ -63,7 +63,3 @@ public class AverageSalaryPerCity {
         }
     }
 }
-
-/* 
- * # starting values Lowest = integer.MIN_VALUE Highest = integer.MAX_VALUE CityWithLowestSalary = Dover CityWithHighestSalary = Dover  # at the end Lowest = 58000 Highest = 200000 CityWithLowestSalary = Dallas CityWithHighestSalary = NYC 
-*/
