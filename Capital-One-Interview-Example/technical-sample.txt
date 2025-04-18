@@ -1,0 +1,10 @@
+Sample questions from Capital One with responses as the typical answer
+
+1. What technical challenges might acquire ING Direct have to Capital One, related to our Technology / IT situation?
+Response: Some challenges that come to mind are:
+    * Both companies will have numerous systems, software, etc. that overlap such as billing, HR, 
+      accounting, web sites, databases, etc. These will have to be simplified to reduce cost.
+    * Both companies may use different internal systems like email benefits, reporting, etc. 
+      that must be integrated and then consolidated. There will be training costs as well. 
+    * Statements, cards, signs, ATMs, etc. will all need to be rebranded and updated.
+    * The companies will have different data models and names for things.
