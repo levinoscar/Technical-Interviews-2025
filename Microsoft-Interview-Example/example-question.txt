@@ -1,0 +1,19 @@
+Imagine you have a long sequence of repeated characters like this:
+
+AAAABBB1111CCCDD
+
+Your goal is to find a way to be able to compress this sequence and make it shorter, 
+while still being able to expand it back to the original. 
+
+For example, this sequence could become 4(A) 3(B) 4(1) 3(C) & 2(D)
+
+It looks simple at first, but think of when the character appears multiple times, 
+like hundreds/thousands of times, etc. 
+
+How is your algorithm going to know whether part of the sequence is a character 
+or the frequency of characters that are appearing.
+
+The same problem occurs if we want to use something like delimiter. 
+
+If you want to use a colon ( : ) or a space (" " ) or a pipe ( | ), 
+how do we know that it is a delimiter or part of the original sequence?
