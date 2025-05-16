@@ -1,0 +1,158 @@
+Optimal transfer
+
+There’s n servers in the network arranged in ascending order of their capacity, 
+the capacity of the ith server is capacity[i], where 0 <= I < n.
+
+The distance between two servers, I and j is defined as the absolute difference in their 
+capacities: /capacity[i] - capacity[j]/. For each server i, the closest server j is the 
+one with the smallest distance to i, and this closest server is unique.
+
+To manage the network, the following operations can be done to server x.
+
+* connect to any server y at cost of /capacity[i] - capacity[j]/ units.
+* connect to the closest server of x for a fixed cost of one unit.
+
+Given m queries, each defined by two integers fromServer[i] and toServer[i], find the 
+minimum cost required to connect from fromServer[i] to toServer[i] for each query.
+The connection can be either direct or routed through a server z.
+
+Note
+* The values in the capability array are distinct
+
+Example
+n = 3, m = 3
+capacity = [2, 7, 10]
+fromServer = [0, 1, 2]
+toServer = [2, 2, 1]
+
+Optimal connections for each query
+
+Starting    Ending
+ server     server      Path    cost
+_________________________________________
+
+0           2           0 ->    1 + 1
+                        1 ->    = 2
+                        2
+
+1           2           1 ->    1
+                        2
+
+2           1            2 ->   1
+__________________________________________
+
+For 0 -> 1, server 1 is closest because |2-7| < |2-10|
+For 1 -> 2, server 2 is closest because |7-10| < |7-2|
+For 2 -> 1, server 1 is closest because |10-7| < |10-2|
+
+Queries:
+
+    1. Server 0 to Server 2: Connecting directly would cost |2-10| = 8. 
+    It is better to connect through the nearest server two times for 2 units.
+    2. Server 1 to Server 2: Server 2 is closest to server 1, so a direct connection costs 1.
+    3. Server 2 to Server 1: Server 1 is closest to server 2, so a direct connection costs 1.
+
+    The total costs of all queries are [2, 1, 1].
+
+    Function Description
+    Complete the function getMinCost in the editor with the following parameter(s):
+        int capacity[n]: the capacity of each server
+
+Test Case 1:
+It looks like you're on the right track with your Java code, aiming to find the minimum cost to connect servers. Let's analyze your code and the test cases to pinpoint the issue and get those 15 tests passing!
+
+Based on the problem description and your code, here's a breakdown of what's happening and where you might need to adjust:
+
+Understanding the Problem
+
+The goal is to calculate the minimum cost to connect a fromServer to a toServer. You have a capacity array representing the capacity of each server. The cost of a direct connection between two servers i and j is the absolute difference of their capacities: |capacity[i] - capacity[j]|.
+
+However, you also have the option to connect via the "closest" server. The cost of connecting from server i to server j via the closest server k is 1 + |capacity[i] - capacity[k]| + |capacity[k] - capacity[j]|.
+
+For each query (a pair of fromServer and toServer), you need to find the minimum of the direct connection cost and the connection cost via the closest server.
+
+Analyzing Your Code
+
+Your getMinCost function appears to be doing the following:
+
+Finding the closest server: It iterates through all servers and finds the closest_server to the fromServer based on the absolute difference in their capacities.
+Calculating costs: For each query, it calculates:
+direct_cost: The cost of a direct connection.
+cost_via_from_closest: The cost of connecting from the fromServer to the toServer via the closest_server (using fromServer to find the closest).
+cost_via_to_closest: The cost of connecting from the fromServer to the toServer via the closest_server (using toServer to find the closest).
+cost_via_both_closest: This seems to be a combination, adding 2 to the sum of absolute differences.
+Finding the minimum cost: It takes the minimum of these four cost options.
+Identifying Potential Issues and How to Fix Them
+
+Incorrect Closest Server Logic: The current logic finds a single "closest" server relative to the fromServer at the beginning of the getMinCost function. However, the closest server might be different for each query (each fromServer and toServer pair). You need to find the closest server within the loop that processes each query.
+
+Cost via Closest Server: You are calculating cost_via_from_closest and cost_via_to_closest. The problem description implies a single closest server k that acts as an intermediary. The cost should be 1 + |capacity[fromServer] - capacity[k]| + |capacity[k] - capacity[toServer]|. Your current calculations might not be directly reflecting this.
+
+cost_via_both_closest: The purpose of adding 2 in cost_via_both_closest isn't entirely clear from the problem description. It's likely not the intended way to calculate the cost via an intermediary.
+
+Revised Approach
+
+Here's how you should modify your getMinCost function:
+
+Java
+
+import java.util.*;
+import java.lang.Math;
+
+class Result {
+
+    public static List<Integer> getMinCost(List<Integer> capacity, List<Integer> fromServer, List<Integer> toServer) {
+        int n = capacity.size();
+        List<Integer> result = new ArrayList<>();
+
+        for (int q = 0; q < fromServer.size(); q++) {
+            int from = fromServer.get(q);
+            int to = toServer.get(q);
+
+            // Calculate direct cost
+            int direct_cost = Math.abs(capacity.get(from) - capacity.get(to));
+            int min_cost = direct_cost;
+
+            // Find the closest server and calculate cost via closest
+            for (int k = 0; k < n; k++) {
+                if (k == from || k == to) continue; // Closest server cannot be the from or to server
+
+                int cost_via_closest = 1 + Math.abs(capacity.get(from) - capacity.get(k)) + Math.abs(capacity.get(k) - capacity.get(to));
+                min_cost = Math.min(min_cost, cost_via_closest);
+            }
+            result.add(min_cost);
+        }
+        return result;
+    }
+}
+Explanation of Changes:
+
+Closest Server within the Loop: The inner loop (for (int k = 0; k < n; k++)) now iterates through all possible intermediary servers for each query.
+Cost via Closest: The cost_via_closest is calculated as 1 + |capacity[from] - capacity[k]| + |capacity[k] - capacity[to]|, which aligns with the problem description.
+Excluding from and to: The if (k == from || k == to) continue; line ensures that the intermediary server k is not the same as the starting or ending server for a more meaningful "via" connection.
+Simplified Minimum Cost: We initialize min_cost with the direct_cost and then update it if a cheaper cost_via_closest is found.
+Applying to Your Test Cases
+
+Test Case 1:
+
+Input:
+5
+2
+5
+6
+9
+11
+2
+2
+1
+2
+0
+
+Test Case 2:
+
+Input:
+1
+1
+4
+1
+4

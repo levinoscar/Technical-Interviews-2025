@@ -1,0 +1,166 @@
+A network contains n nodes, where node 1 is the root node. The network structure 
+is represented as a tree, with each node (except the root) having exactly one parent 
+specified by the array par, where par[i] represents the parent of node i(1-based indexing).
+
+Commands propagate through the network as follows:
+* A node sends the command to its direct child nodes in an ascending order of their indices.
+* Each child node propagates the command to its subtree using the same process.
+* The propagation stops when all nodes in the subtree have received the command.
+
+Given q queries, each query (startNode[i], index[i]) asks for the index[i]th node 
+in the sequence of command propagation starting from node startNode[i]. Return the 
+index[ith node] or -1 if fewer than index[i] nodes receive the command. Each query 
+is processed independently.
+
+Example
+n = 9
+par = [-1, 1, 1, 1, 3, 5, 3, 5, 7]
+q = 4
+query = [[1, 5], [7, 2], [9, 2], [3, 6]]
+
+                1
+               /|\
+              / | \
+             /  |  \
+            /   |   \
+           /    |    \
+          /     |     \
+         /      |      \
+        2       3       4
+               /\
+              /  \
+             /    \
+            /      \
+           5        7
+          /\         \ 
+         /  \         \
+        /    \         \
+       6      8         9
+
+If node 1 sends a command, the nodes receive it in the following order: [1, 2, 3, 5, 6, 8, 7, 9, 4].
+If node 3 sends a command, the nodes receive it in the following order: [3, 5, 6,8, 7, 9].
+If node 7 sends a command, the nodes receive it in the following order: [7, 9].
+If node 9 sends a command, the nodes receive it in the following order: [9].
+
+So, on processing the queries:
+
+    1. query[0] = [1, 5]: If node 1 sends a command, the 5th node receiving it would be 6.
+    2. query[1] = [7, 2]: If node 7 sends a command, the 2nd node receiving it would be 9.
+    3. query[2] = [9, 2]: If node 9 sends a command, there is no 2nd node to receive it.
+    4. query[3] = [3, 6]: If node 3 sends a command, the 6th node receiving it would be 9.
+
+Hence, the array returned = [6, 9, -1, 9]. 
+
+Function Description
+
+Complete the function
+getAnswersToQueries in the editor with the following parameters:
+    int par[n]: Each par[i] represents the parent of the ith node.
+    int query[q][2]: Each query[i] consists of [startNode[i], index[i]].
+
+Returns
+    int[q]: an array of integers of size q representing answers to the queries
+
+Constraints
+
+    * 2 <= n <= 10^5
+    * 1 <= par[i] <= n for all nodes except the root node. par[0] = -1.
+    * 1 <= q <= 2 * 10^5
+    * 1 <= query[i][0] <= n
+    * 1 <= query[i][1] <= n
+
+Input Format For Custom Testing
+
+The first line contains an integer, n, denoting the number of vertices in the tree.
+Each line i of the n subsequent lines (where 0 <= i < n) contains an integer describing par[i].
+The first line contains an integer, q, denoting the number of elements in query.
+Each line i of the q subsequent lines (where 0 <= i < q) contains 2 space-separated 
+integers describing query[i], where query[i] = [startNode[i], index[i]].
+
+Sample Case 0
+Sample Input For Custom Testing
+  STDIN       Function
+  -----       --------
+  5        -> par[] size = 5
+  -1       -> par[] size = [-1, 1, 1, 2, 2]
+  1
+  1
+  2
+  2
+  2        -> query[] size = 2
+  2        -> query[i][] size = 2
+  1 3      -> query= [[1, 3], [2, 3]]
+  2 3
+
+Sample Output
+
+4
+5
+
+Explanation
+
+        1
+        /\
+       /  \
+      /    \
+     2      3
+    /\
+   /  \
+  /    \
+ 4      5
+
+If node 1 sends a command, the nodes receive it in the following order: [1, 2, 4, 5, 3].
+If node 2 sends a command, the nodes receive it in the following order: [2, 4, 5].
+
+So, on processing the queries:
+    1. query[0] = [1, 3]: If node 1 sends a command, the 3rd node, node 4, receives it.
+    2. query[1] = [2, 3]: If node 2 sends a command, the 3rd node, node 5, receives it.
+
+Hence, the array returned = [4, 5]
+
+Sample Case 1
+Sample Input For Custom Testing
+  STDIN       Function
+  -----       --------
+  7        -> par[] size = 7
+  -1       -> par[] size = [-1, 1, 1, 2, 3, 1, 6]
+  1
+  1
+  2
+  3
+  1
+  6
+  3        -> query[] size = 3
+  2        -> query[i][] size = 2
+  2 4      -> query= [[2, 4], [7, 1], [1, 6]]
+  7 1
+  1 6
+
+Sample Output
+
+-1
+7
+6
+
+Explanation
+
+         1
+       / | \
+      /  |  \
+     /   |   \
+    2    3     6
+    |    |     |
+    |    |     |
+    |    |     |
+    4    5     7
+
+If node 2 sends a command, the nodes receive it in the following order: [2, 4].
+If node 7 sends a command, the nodes receive it in the following order: [7].
+If node 1 sends a command, the nodes receive it in the following order: [1, 2, 4, 3, 5, 6, 7].
+
+So, on processing the queries:
+    1. query[0] = [2, 4]: If node 2 sends a command, there is no 4th node to receive it.
+    2. query[1] = [7, 1]: If node 7 sends a command, the 1st node, node 7, receives it.
+    3. query[2] = [1, 6]: If node 1 sends a command, the 6th node, node 6, receives it.
+
+Hence, the array returned = [-1, 1, 6].

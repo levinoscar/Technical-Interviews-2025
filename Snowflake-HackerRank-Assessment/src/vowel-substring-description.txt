@@ -1,0 +1,62 @@
+Vowel Substring
+
+Given a string composed of lowercase letters within the ASCII range 'a'-'z', 
+determine the number of substrings that consist solely of vowels, where each vowel 
+appears at least once. The vowels are ['a', 'e', 'i', 'o', 'u']. A substring is defined 
+as a contiguous sequence of characters within the string.
+
+Example
+s = 'aeioaexaaeuiou'
+
+There is a substring to the left that is made of vowels, 'aeioae' which is followed 
+by an 'x'. Since 'x' is not a vowel, it cannot be included in the substring, and this 
+substring does not contain all of the vowels. It is not a qualifying substring. Moving 
+to the right, there are four substrings that do qualify: 'aaeuiou', 'aaeuio', 'aeuiou' and 'aeuio'.
+
+Function Description
+Complete the function vowelSubstring in the editor with the following parameter(s):
+    string s: a string
+
+Returns
+    int: the number of substrings that consist of vowels only ('a', 'e', 'i', 'o', 'u')
+    where every towel appears at least once.
+
+Constraints
+    * 1 <= size_of(s) <= 10^5
+    * s[i] is in the range ascii['a'-'z'] (where 0 <= i < size_of(s))
+
+Input Format For Custom Testing
+    The first line contains a string s.
+
+Sample Case 0
+Sample Input for Custom Testing
+
+    STDIN           Function
+    -----           --------
+    aaeiouxa  ->    s = "aaeiouxa"
+
+    Sample Output
+    2
+
+    Explanation
+    s = "aaeiouxa"
+
+    There are two qualifying substrings: 
+    s[0:5] = "aaeiou" 
+    s[1:5] = "aeiou"
+
+Sample Case 1
+Sample Input for Custom Testing
+
+    STDIN           Function
+    -----           --------
+    axyzaeiou ->    s = "axyzaeiou"
+
+    Sample Output
+    1
+
+    Explanation
+    s = "axyzaeiou"
+
+    There is only one qualifying substring: 
+    s[4:8] = "aeiou"
